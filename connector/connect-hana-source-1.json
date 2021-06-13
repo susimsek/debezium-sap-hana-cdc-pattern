@@ -1,0 +1,12 @@
+{
+    "name": "test-topic-1-source",
+    "config": {
+        "connector.class": "com.sap.kafka.connect.source.hana.HANASourceConnector",
+        "tasks.max": "1",
+        "topics": "test_topic_1",
+        "connection.url": "jdbc:sap://<host>/",
+        "connection.user": "${file:/kafka/custom-config/hana-secrets.properties:connection1-user}",
+        "connection.password": "${file:/kafka/custom-config/hana-secrets.properties:connection1-password}",
+        "test_topic_1.table.name": "\"<schemaname>\".\"PERSONS1\""
+    }
+}
