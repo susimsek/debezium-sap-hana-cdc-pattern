@@ -53,3 +53,5 @@ sudo chmod +x connector.sh
 You can access the Kafdrop from the following url.
 
 http://localhost:9000
+
+<img src="https://github.com/susimsek/debezium-hana-cdc-pattern/blob/main/images/kafdrop.png" alt="Debezium Hana Cdc Kafdrop" width="100%" height="100%"/> 
