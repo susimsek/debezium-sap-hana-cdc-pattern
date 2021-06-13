@@ -1,5 +1,5 @@
-# Debezium Hana Cdc Pattern
-> Debezium Hana Cdc Pattern Example
+# Debezium Sap Hana Cdc Pattern
+> Debezium Sap Hana Cdc Pattern Example
 >
 <img src="https://github.com/susimsek/debezium-hana-cdc-pattern/blob/main/images/debezium-hana-cdc-pattern.png" alt="Debezium Hana Cdc Pattern" width="100%" height="100%"/> 
 
