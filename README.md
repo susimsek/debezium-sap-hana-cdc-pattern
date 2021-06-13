@@ -17,9 +17,6 @@ Edit connection.url in json files connect-hana-source-1.json and connect-hana-si
 "connection.url": "jdbc:sap://<host>/"
 ```
 
-```sh
-"connection.url": "jdbc:sap://<host>/"
-```
 
 Edit connection1-user and connection1-password in hana-secrets.properties inside the connector folder.
 
