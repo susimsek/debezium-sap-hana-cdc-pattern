@@ -50,6 +50,8 @@ sudo chmod +x connector.sh
 ```
 
 ## Kafdrop
+Kafdrop is a web UI for viewing Kafka topics and browsing consumer groups.
+
 You can access the Kafdrop from the following url.
 
 http://localhost:9000
