@@ -1,7 +1,7 @@
 # Debezium Hana Cdc Pattern
 > Debezium Hana Cdc Pattern Example
 >
-<img src="https://github.com/susimsek/debezium-hana-cdc-pattern-pattern/blob/main/images/debezium-hana-cdc.png" alt="Debezium Hana Cdc Pattern" width="100%" height="100%"/> 
+<img src="https://github.com/susimsek/debezium-hana-cdc-pattern-pattern/blob/main/images/debezium-hana-cdc.png?v=2" alt="Debezium Hana Cdc Pattern" width="100%" height="100%"/> 
 
 ## Prerequisites
 
