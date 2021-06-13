@@ -1,7 +1,7 @@
 # Debezium Sap Hana Cdc Pattern
 > Debezium Sap Hana Cdc Pattern Example
 >
-<img src="https://github.com/susimsek/debezium-hana-cdc-pattern/blob/main/images/debezium-hana-cdc-pattern.png" alt="Debezium Hana Cdc Pattern" width="100%" height="100%"/> 
+<img src="https://github.com/susimsek/debezium-sap-hana-cdc-pattern/blob/main/images/debezium-sap-hana-cdc-pattern.png" alt="Debezium Hana Cdc Pattern" width="100%" height="100%"/> 
 
 ## Prerequisites
 
@@ -55,6 +55,7 @@ sudo chmod +x connector.sh
 
 ### Prerequisites
 
+* SAP HANA
 * Vagrant 2.2+
 * Virtualbox or Hyperv
 
@@ -117,4 +118,4 @@ You can access the Kafdrop from the following url.
 
 http://localhost:9000
 
-<img src="https://github.com/susimsek/debezium-hana-cdc-pattern/blob/main/images/kafdrop.png" alt="Debezium Hana Cdc Kafdrop" width="100%" height="100%"/> 
+<img src="https://github.com/susimsek/debezium-sap-hana-cdc-pattern/blob/main/images/kafdrop.png" alt="Debezium Hana Cdc Kafdrop" width="100%" height="100%"/> 
