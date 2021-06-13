@@ -5,6 +5,7 @@
 
 ## Prerequisites
 
+* SAP HANA
 * Docker 19.03+
 * Docker Compose 1.25+
 
