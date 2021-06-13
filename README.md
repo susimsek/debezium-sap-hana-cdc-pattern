@@ -9,7 +9,7 @@
 * Docker 19.03+
 * Docker Compose 1.25+
 
-## Hana Connection
+## SAP Hana Connection
 
 Edit connection.url in json files connect-hana-source-1.json and connect-hana-sink-1.json.these json files are inside the connector folder.
 
