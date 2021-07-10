@@ -4,71 +4,67 @@ $script = <<-SCRIPT
 # mkdir -p /home/vagrant/app/sdk/vagrant_node_modules
 # chown vagrant:vagrant /home/vagrant/app/sdk/vagrant_node_modules
 
-echo "cd /vagrant" >> /home/vagrant/.profile
-echo "cd /vagrant" >> /home/vagrant/.bashrc
+echo "cd $1" >> /home/vagrant/.profile
+echo "cd $1" >> /home/vagrant/.bashrc
 echo "All good!!"
 SCRIPT
 
+
 VAGRANTFILE_API_VERSION = "2"
+VM_SYNCED_FOLDER_PATH = "/vagrant/go/src/app"
 
 # Vagrant base box to use
-BOX_BASE = "ubuntu/focal64"
-# amount of RAM for Vagrant box
-BOX_RAM_MB = "4096"
-# number of CPUs for Vagrant box
-BOX_CPU_COUNT = "2"
+BOX_BASE = "ubuntu/bionic64"
+
+# set servers list and their parameters
+	NODES = [
+  	# { :hostname => "haproxy", :ip => "192.168.12.10", :cpus => 1, :mem => 512, :type => "haproxy" },
+  	{ :hostname => "k8smaster", :ip => "192.168.12.11", :cpus => 4, :mem => 10240, :type => "k8s" }
+  	# { :hostname => "k8snode1", :ip => "192.168.12.12", :cpus => 2, :mem => 2048, :type => "k8s" }
+	]
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-
     # 1. Use this for "Standard setup"
+    etcHosts = ""
+
     config.vm.box = BOX_BASE
+    config.vm.synced_folder ".", VM_SYNCED_FOLDER_PATH
     # Uncomment the lines below if you would like to protect the VM
     # config.ssh.username = 'vagrant'
     # config.ssh.password = 'vagrant'
     # config.ssh.insert_key = 'true'
 
-    config.vm.synced_folder ".", "/vagrant"
+    NODES.each do |node|
+        if node[:type] != "haproxy"
+        	etcHosts += "echo '" + node[:ip] + "   " + node[:hostname] + "' >> /etc/hosts" + "\n"
+    		else
+    			etcHosts += "echo '" + node[:ip] + "   " + node[:hostname] + " elb.kub ' >> /etc/hosts" + "\n"
+    	end
+    end #end NODES
 
-    # Ports forward
-    # For Kafka
-    config.vm.network "forwarded_port", guest: 9092, host: 9092
+    NODES.each do |node|
+        config.vm.define node[:hostname] do |cfg|
+            cfg.vm.hostname = node[:hostname]
+            cfg.vm.network "private_network", ip: node[:ip]
+            cfg.vm.provider :virtualbox do |vb|
+                vb.customize [ "modifyvm", :id, "--cpus", node[:cpus] ]
+                vb.customize [ "modifyvm", :id, "--memory", node[:mem] ]
+                vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+                vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+                vb.customize ["modifyvm", :id, "--name", node[:hostname] ]
+                vb.gui = false
+            end #end provider
+            cfg.vm.provider :hyperv do |hv|
+                hv.customize [ "modifyvm", :id, "--cpus", node[:cpus] ]
+                hv.customize [ "modifyvm", :id, "--memory", node[:mem] ]
+                hv.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+                hv.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+                hv.customize ["modifyvm", :id, "--name", node[:hostname] ]
+                hv.gui = false
+            end #end provider
 
-    # For Debezium
-    config.vm.network "forwarded_port", guest: 8083, host: 8083
-
-    # For Kafdrop
-    config.vm.network "forwarded_port", guest: 9000, host: 9000
-
-
-    # This gets executed for both vm1 & vm2
-    # config.vm.provision "shell", inline:  "echo 'All good'"
-    config.vm.provision "shell", inline:  $script
-
-    # config.vm.provision "shell", run: "always", inline: <<-SHELL
-    #   mount --bind  /home/vagrant/app/sdk/node_modules /home/vagrant/app/sdk/vagrant_node_modules
-    # SHELL
-
-    # To use a diffrent Hypervisor create a section config.vm.provider
-    # And comment out the following section
-    # Configuration for Virtual Box
-    config.vm.provider :virtualbox do |vb|
-        # Change the memory here if needed - 3 Gb memory on Virtual Box VM
-        vb.customize ["modifyvm", :id, "--memory", BOX_RAM_MB, "--cpus", BOX_CPU_COUNT]
-        # Change this only if you need destop for Ubuntu - you will need more memory
-        vb.gui = false
-        # In case you have DNS issues
-        # vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+            cfg.vm.provision :shell, inline: $script, args: "#{VM_SYNCED_FOLDER_PATH}"
+            cfg.vm.provision :shell, :inline => etcHosts
+        end
     end
-
-    # Configuration for Windows Hyperv
-    config.vm.provider :hyperv do |hv|
-        # Change the memory here if needed - 2 Gb memory on Virtual Box VM
-        hv.customize ["modifyvm", :id, "--memory", BOX_RAM_MB, "--cpus", BOX_CPU_COUNT]
-        # Change this only if you need destop for Ubuntu - you will need more memory
-        hv.gui = false
-        # In case you have DNS issues
-        # vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    end
-
-
 end
