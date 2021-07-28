@@ -27,11 +27,28 @@ connection1-password=<password>
 
 Create a table named PERSONS1 with the following SQL schema (PersonID int primary key, LastName varchar(255), FirstName varchar(255)).
 
-## Installation
+
+### Build Docker image for kafka-connector-hana
 
 ```sh
-docker build -f debezium/Dockerfile -t debezium-connector-hana-min:1.2 debezium
+cd debezium
 ```
+
+```sh
+make get_libs
+```
+
+```sh
+ls target 
+```
+
+Download the appropriate kafka-connector-hana_2.12-x.x.x.jar file from https://github.com/SAP/kafka-connect-sap/releases and save it in target directory.
+
+```sh
+docker build -f Dockerfile -t debezium-connector-hana-min:1.2 .
+```
+
+## Installation
 
 ```sh
 docker-compose up -d 
